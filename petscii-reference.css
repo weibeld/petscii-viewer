@@ -1,0 +1,250 @@
+
+#container.loaded {
+	visibility: visible !important;
+}
+
+@font-face {
+  font-family: 'PETSCII Control Codes';
+  src: url('PetsciiControlCodes.eot'); /* IE9 Compat Modes */
+  src: url('PetsciiControlCodes.eot%3F') format('embedded-opentype'), /* IE6-IE8 */
+       url('PetsciiControlCodes.woff') format('woff'), /* Modern Browsers */
+       url('PetsciiControlCodes.ttf')  format('truetype'), /* Safari, Android, iOS */
+       url('PetsciiControlCodes.svg') format('svg'); /* Legacy iOS */
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+  font-family: 'CbmShift';
+  src: url('CbmShift-STYLE.eot');
+  src: url('CbmShift-STYLE.eot%3F') format('embedded-opentype'),
+    url('CbmShift-STYLE.woff2') format('woff2'),
+    url('CbmShift-STYLE.woff') format('woff'),
+    url('CbmShift-STYLE.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+           
+@font-face {
+  font-family: 'MonoReference';
+  src: url('VeraMono-Bold-webfont.eot'); /* IE9 Compat Modes */
+  src: url('VeraMono-Bold-webfont.eot%3F') format('embedded-opentype'), /* IE6-IE8 */
+       url('VeraMono-Bold-webfont.woff') format('woff'), /* Modern Browsers */
+       url('VeraMono-Bold-webfont.ttf')  format('truetype'), /* Safari, Android, iOS */
+       url('VeraMono-Bold-webfont.svg') format('svg'); /* Legacy iOS */
+	font-weight: normal;
+	font-style: normal;
+}
+
+.controlcode {
+	display: block;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	background-color: #303030 !important;
+	font-family: "PETSCII Control Codes";
+	font-size: 75%;
+	text-align: center;
+	color:  white;
+}
+
+.colorcode {
+	display: block;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	font-family: "PETSCII Control Codes";
+	font-size: 75%;
+	text-align: center;
+}
+
+.nothingcode {
+	display: block;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	background-color: #888888 !important;
+	font-family: "PETSCII Control Codes";
+	font-size: 75%;
+	text-align: center;
+	color:  #404040;
+}
+
+.c64_bg00_con{background-color:#000000;color:#ffffff;text-shadow: 1px 1px #888;}
+.c64_bg01_con{background-color:#ffffff;color:#000000;text-shadow: 1px 1px #333;}
+.c64_bg02_con{background-color:#682c2b;color:#ffffff;text-shadow: 1px 1px #333;}
+.c64_bg03_con{background-color:#70a4b2;color:#ffffff;text-shadow: 1px 1px #333;}
+.c64_bg04_con{background-color:#6f3d86;color:#ffffff;text-shadow: 1px 1px #333;}
+.c64_bg05_con{background-color:#588d43;color:#ffffff;text-shadow: 1px 1px #333;}
+.c64_bg06_con{background-color:#352879;color:#ffffff;text-shadow: 1px 1px #333;}
+.c64_bg07_con{background-color:#b8c76f;color:#ffffff;text-shadow: 1px 1px #333;}
+.c64_bg08_con{background-color:#6f4f25;color:#ffffff;text-shadow: 1px 1px #888;}
+.c64_bg09_con{background-color:#433900;color:#ffffff;text-shadow: 1px 1px #888;}
+.c64_bg0a_con{background-color:#9a6759;color:#ffffff;text-shadow: 1px 1px #333;}
+.c64_bg0b_con{background-color:#444444;color:#ffffff;text-shadow: 1px 1px #888;}
+.c64_bg0c_con{background-color:#6c6c6c;color:#ffffff;text-shadow: 1px 1px #333;}
+.c64_bg0d_con{background-color:#9ad284;color:#ffffff;text-shadow: 1px 1px #333;}
+.c64_bg0e_con{background-color:#6c5eb5;color:#ffffff;text-shadow: 1px 1px #333;}
+.c64_bg0f_con{background-color:#959595;color:#ffffff;text-shadow: 1px 1px #333;}
+
+.c64_cset_shift {
+	font-family: 'CbmShift', monospace !important;
+}
+
+table.matrix, tr, td {
+	font: none;
+	padding: 0;
+	margin: 0;
+}
+thead, tbody, tr, td {
+	background-color: inherit;
+}
+tr th {
+	background: #fff;
+	border-bottom: 2px solid #000;
+	border-right: 2px solid #000;
+	font: bold 10pt/14px verdana, helvetica, sans-serif;
+	letter-spacing: 0px;
+	vertical-align: bottom;
+	padding: 2px;
+}
+th:last-child {
+	border-right: none;
+}
+tr td {
+	border-right: 2px solid #9090b0;
+	border-bottom: 2px solid #9090b0;
+	cursor: pointer;
+}
+td:first-child {
+	border-left: 2px solid #888;
+}
+tr:first-child td {
+	border-top: 2px solid #888;
+}
+td:hover {
+	background-color: #000 !important;
+	color: #fff !important;
+}
+td.viewing, td.viewing span {
+	background-color: #444444 !important;
+	color: #9ad284 !important;
+}
+
+#cbmshift {
+	xfloat: right;
+	display: inline-block;
+	margin: 8px 0 0 0 !important;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: pointer;
+}
+
+
+.endset {
+	margin-bottom: 16px;
+}
+
+.heading {
+	border-bottom: 1px solid black;
+	font-size: 90%;
+	text-align: left;
+}
+.values {
+	font-family: MonoReference, monospace;
+	font-size: 175%;
+	text-align: center;
+}
+.values-small {
+	font-family: MonoReference, monospace;
+	font-size: 107%;
+	text-align: center;
+}
+
+.petscii {
+	font-size: 125%;
+	font-weight: bold;
+}
+
+.glyph-heading {
+	border-bottom: 2px solid black;
+	font-size: 80%;
+	text-align: center;
+}
+.glyph-sub-heading {
+	font-size: 75%;
+	text-align: center;
+}
+.glyph-sub-heading div {
+	text-decoration: underline;
+}
+.glyphs {
+	text-align: center;
+}
+
+.glyphs span:hover {
+	background-color: #352879 !important;
+	color: #6c5eb5 !important;
+}
+.glyphs span.controlcode:hover {
+	background-color: black !important;
+	color: white !important;
+}
+.glyphs span.colorcode:hover {
+	background-color: white !important;
+	color: black !important;
+}
+.glyphs span.nothingcode:hover {
+	background-color: #888888 !important;
+	color:  #404040 !important;;
+}
+
+.unicode {
+	font-family: MonoReference, monospace;
+	font-size: 150%;
+	font-weight: bold;
+	text-align: left;
+}
+.unicode-ref {
+	font-family: MonoReference, monospace;
+	vertical-align: top;
+}
+
+.unicode-name {
+	margin-left: 8px;
+	padding-top: 2px;
+	padding-bottom: 4px;
+	font-size: 75%;
+}
+.key {
+	padding: 2px;
+	border: 1px solid #60461B;
+	background: #60461B;
+	color: white;
+	-moz-border-radius: 5px; 
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	border-radius: 5px; 
+}
+
+#field-notes {
+	font-size: 50%;
+	font-weight: normal;
+}
+
+.tooltip.left .tooltip-arrow {
+  border-left-color: blue !important;
+}
+.tooltip-inner {
+  color: #000;
+  font-weight: bold;
+  background: #fff;
+	border: 2px solid blue;
+}
+.tooltip {
+	margin-left: 15px !important;
+}

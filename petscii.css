@@ -1,0 +1,192 @@
+/*
+	C64 PETSCII/Style v0.9
+*/
+/*
+  @palette - one of:
+    pepto, ...
+*/
+/*
+  do not make changes below this line
+*/
+/*
+  pepto's palette
+  http://www.pepto.de/projects/colorvic/
+*/
+@font-face {
+  font-family: 'C64 Pro Mono';
+  src: url('C64_Pro_Mono-STYLE.eot');
+  src: url('C64_Pro_Mono-STYLE.eot%3F') format('embedded-opentype'),
+    url('C64_Pro_Mono-STYLE.woff2') format('woff2'), 
+    url('C64_Pro_Mono-STYLE.woff') format('woff'),
+    url('C64_Pro_Mono-STYLE.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'C64 Pro';
+  src: url('C64_Pro-STYLE.eot');
+  src: url('C64_Pro-STYLE.eot%3F') format('embedded-opentype'), /* IE6-IE8 */ url('C64_Pro-STYLE.woff') format('woff'), /* Modern Browsers */ url('C64_Pro-STYLE.ttf') format('truetype'), /* Safari, Android, iOS */ url('https://style64.org/petscii/C64_Pro-STYLE.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  
+  /* IE9 Compat Modes */
+  /* Legacy iOS */
+}
+.c64_pro_mono {
+  font-family: 'C64 Pro Mono', monospace;
+  font-weight: normal;
+  font-style: normal;
+  letter-spacing: 0px;
+}
+.c64_pro {
+  font-family: 'C64 Pro', monospace;
+  font-weight: normal;
+  font-style: normal;
+  letter-spacing: 0px;
+}
+.c64_petscii {
+  font-family: 'C64 Pro Mono', monospace;
+  font-weight: normal;
+  font-style: normal;
+  letter-spacing: 0px;
+  font-size: 12pt;
+  line-height: 16px;
+}
+.c64_font {
+  font-family: 'C64 Pro', monospace;
+  font-weight: normal;
+  font-style: normal;
+  letter-spacing: 0px;
+  font-size: 12pt;
+  line-height: 16px;
+}
+.c64_directory {
+  margin-bottom: 8px;
+  font-family: 'C64 Pro Mono', monospace;
+  font-weight: normal;
+  font-style: normal;
+  letter-spacing: 0px;
+  font-size: 12pt;
+  line-height: 16px;
+}
+.c64_fg00 {
+  color: #000000;
+}
+.c64_fg01 {
+  color: #ffffff;
+}
+.c64_fg02 {
+  color: #68372b;
+}
+.c64_fg03 {
+  color: #70a4b2;
+}
+.c64_fg04 {
+  color: #6f3d86;
+}
+.c64_fg05 {
+  color: #588d43;
+}
+.c64_fg06 {
+  color: #352879;
+}
+.c64_fg07 {
+  color: #b8c76f;
+}
+.c64_fg08 {
+  color: #6f4f25;
+}
+.c64_fg09 {
+  color: #433900;
+}
+.c64_fg0a {
+  color: #9a6759;
+}
+.c64_fg0b {
+  color: #444444;
+}
+.c64_fg0c {
+  color: #6c6c6c;
+}
+.c64_fg0d {
+  color: #9ad284;
+}
+.c64_fg0e {
+  color: #6c5eb5;
+}
+.c64_fg0f {
+  color: #959595;
+}
+.c64_bg00 {
+  background-color: #000000;
+}
+.c64_bg01 {
+  background-color: #ffffff;
+}
+.c64_bg02 {
+  background-color: #68372b;
+}
+.c64_bg03 {
+  background-color: #70a4b2;
+}
+.c64_bg04 {
+  background-color: #6f3d86;
+}
+.c64_bg05 {
+  background-color: #588d43;
+}
+.c64_bg06 {
+  background-color: #352879;
+}
+.c64_bg07 {
+  background-color: #b8c76f;
+}
+.c64_bg08 {
+  background-color: #6f4f25;
+}
+.c64_bg09 {
+  background-color: #433900;
+}
+.c64_bg0a {
+  background-color: #9a6759;
+}
+.c64_bg0b {
+  background-color: #444444;
+}
+.c64_bg0c {
+  background-color: #6c6c6c;
+}
+.c64_bg0d {
+  background-color: #9ad284;
+}
+.c64_bg0e {
+  background-color: #6c5eb5;
+}
+.c64_bg0f {
+  background-color: #959595;
+}
+.c64_8x8 {
+  font-size: 6pt;
+  line-height: 8px;
+}
+.c64_16x16 {
+  font-size: 12pt;
+  line-height: 16px;
+}
+.c64_24x24 {
+  font-size: 18pt;
+  line-height: 24px;
+}
+.c64_32x32 {
+  font-size: 24pt;
+  line-height: 32px;
+}
+.c64_48x48 {
+  font-size: 36pt;
+  line-height: 48px;
+}
+.c64_64x64 {
+  font-size: 48pt;
+  line-height: 64px;
+}
