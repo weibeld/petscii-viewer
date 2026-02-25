@@ -127,12 +127,64 @@ td:hover {
 	color: #fff !important;
 }
 td.viewing, td.viewing span {
-	background-color: #444444 !important;
-	color: #9ad284 !important;
+	box-shadow: inset 0 0 0 3px #ffffff !important;
+	z-index: 20;
 }
-td.related-key, td.related-key span {
-	background-color: #303030 !important;
-	color: #6c5eb5 !important;
+
+/* Enhanced Related Key Highlighting */
+td {
+	position: relative;
+}
+
+td.related-key {
+	background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.key-labels {
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: flex;
+	flex-direction: row;
+	pointer-events: none;
+	z-index: 10;
+}
+
+.key-label {
+	font-family: verdana, sans-serif;
+	font-size: 8px;
+	font-weight: bold;
+	padding: 0 3px;
+	line-height: 11px;
+	white-space: nowrap;
+	border-bottom-left-radius: 3px;
+	margin-left: 1px;
+	box-shadow: 0 0 1px rgba(0,0,0,0.5);
+}
+
+.key-label.mod-shift {
+	background-color: #0000ff !important; /* Pure Blue */
+	color: #ffffff !important;
+}
+
+.key-label.mod-cbm {
+	background-color: #ff0000 !important;  /* Pure Red */
+	color: #ffffff !important;
+}
+
+.key-label.mod-ctrl {
+	background-color: #ffff00 !important;  /* Pure Yellow */
+	color: #000000 !important;
+}
+
+.key-label.mod-base {
+	background-color: #00ff00 !important;  /* Pure Green */
+	color: #000000 !important;
+}
+
+.key-label.mod-multi {
+	background-color: #ffffff !important;  /* White */
+	color: #000000 !important;
 }
 
 #cbmshift {

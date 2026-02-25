@@ -370,47 +370,124 @@ Information to the right side show various details about the PETSCII code point.
 		view(petscii, $(this));
 	});
 
-	function getBasicKeys(petscii) {
+	var keyNameMap = {
+		'CLR/HOME': 'Home',
+		'INST/DEL': 'Del',
+		'RUN/STOP': 'Stop',
+		'CRSR U/D': 'Crsr D',
+		'CRSR L/R': 'Crsr R',
+		'F1/F2': 'F1',
+		'F3/F4': 'F3',
+		'F5/F6': 'F5',
+		'F7/F8': 'F7'
+	};
+
+	function getKeyInfo(petscii) {
 		var keyObj = keycode[petscii];
 		if (!keyObj || !keyObj.key) return [];
 		
-		var $div = $('<div>').html(keyObj.key);
-		var keys = $div.find('.key').map(function() {
-			return $(this).text().trim().toUpperCase();
-		}).get();
+		var combos = keyObj.key.split(',');
+		var result = [];
 		
-		var excluded = ['SHIFT', 'CBM', 'CTRL', 'CONTROL'];
-		var basicKeys = [];
-		for (var i = 0; i < keys.length; i++) {
-			if (excluded.indexOf(keys[i]) === -1) {
-				basicKeys.push(keys[i]);
+		for (var c = 0; c < combos.length; c++) {
+			var $div = $('<div>').html(combos[c]);
+			var keys = $div.find('.key').map(function() {
+				var name = $(this).text().trim().toUpperCase();
+				return keyNameMap[name] || name;
+			}).get();
+			
+			var modifiersList = ['SHIFT', 'CBM', 'CTRL', 'CONTROL'];
+			var bKeys = [];
+			var mods = [];
+			for (var i = 0; i < keys.length; i++) {
+				var k = keys[i].toUpperCase();
+				if (modifiersList.indexOf(k) !== -1) {
+					mods.push(k);
+				} else {
+					bKeys.push(keys[i]); // Keep case from map if applicable
+				}
+			}
+			if (keys.length > 0) {
+				result.push({ basicKeys: bKeys, modifiers: mods });
 			}
 		}
 		
-		return basicKeys;
+		return result;
 	}
 
 	function highlightRelated(petscii) {
+		$('.key-labels').remove();
 		$('.related-key').removeClass('related-key');
 		
-		var basicKeys = getBasicKeys(petscii);
-		if (basicKeys.length === 0) return;
+		var currentCombos = getKeyInfo(petscii);
+		var currentBasicKeys = [];
+		for (var c = 0; c < currentCombos.length; c++) {
+			for (var k = 0; k < currentCombos[c].basicKeys.length; k++) {
+				var bKey = currentCombos[c].basicKeys[k].toUpperCase();
+				if (currentBasicKeys.indexOf(bKey) === -1) {
+					currentBasicKeys.push(bKey);
+				}
+			}
+		}
+		
+		if (currentBasicKeys.length === 0) return;
 		
 		var $tds = $('#rvsoff-ug td');
 		for (var i = 0; i < 256; i++) {
-			if (i === petscii) continue;
-			var otherBasicKeys = getBasicKeys(i);
+			var otherCombos = getKeyInfo(i);
+			var matchingCombos = [];
 			
-			var isRelated = false;
-			for (var j = 0; j < basicKeys.length; j++) {
-				if (otherBasicKeys.indexOf(basicKeys[j]) !== -1) {
-					isRelated = true;
-					break;
+			for (var oc = 0; oc < otherCombos.length; oc++) {
+				var isMatch = false;
+				for (var j = 0; j < otherCombos[oc].basicKeys.length; j++) {
+					if (currentBasicKeys.indexOf(otherCombos[oc].basicKeys[j].toUpperCase()) !== -1) {
+						isMatch = true;
+						break;
+					}
+				}
+				if (isMatch) {
+					matchingCombos.push(otherCombos[oc]);
 				}
 			}
 			
-			if (isRelated) {
-				$tds.eq(i).addClass('related-key');
+			if (matchingCombos.length > 0) {
+				var $td = $tds.eq(i);
+				var $labelContainer = $('<div class="key-labels">').appendTo($td);
+				
+				for (var m = 0; m < matchingCombos.length; m++) {
+					var combo = matchingCombos[m];
+					var modLabels = [];
+					var modClass = 'mod-base';
+					
+					if (combo.modifiers.length > 1) {
+						modClass = 'mod-multi';
+					} else if (combo.modifiers.length === 1) {
+						var mName = combo.modifiers[0];
+						if (mName === 'SHIFT') modClass = 'mod-shift';
+						else if (mName === 'CBM') modClass = 'mod-cbm';
+						else if (mName === 'CTRL' || mName === 'CONTROL') modClass = 'mod-ctrl';
+					}
+					
+					for (var mi = 0; mi < combo.modifiers.length; mi++) {
+						var mName = combo.modifiers[mi];
+						if (mName === 'SHIFT') modLabels.push('Sh');
+						else if (mName === 'CBM') modLabels.push('CBM');
+						else if (mName === 'CTRL' || mName === 'CONTROL') modLabels.push('Ct');
+						else modLabels.push(mName.substring(0, 2));
+					}
+					
+					var bKey = combo.basicKeys[0] || '';
+					var labelText = '';
+					if (modLabels.length > 0) {
+						labelText = modLabels.join('-') + (bKey ? '-' + bKey : '');
+					} else {
+						labelText = bKey;
+					}
+					
+					if (labelText) {
+						$('<div class="key-label">').addClass(modClass).text(labelText).appendTo($labelContainer);
+					}
+				}
 			}
 		}
 	}
@@ -622,6 +699,7 @@ Information to the right side show various details about the PETSCII code point.
 	}
 
 	view(0x5f);
+	viewing = $('#rvsoff-ug td').eq(0x5f);
 	highlightRelated(0x5f);
 
 	$(window).bind("load", function() {
