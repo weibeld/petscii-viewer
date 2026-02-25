@@ -347,12 +347,18 @@ Information to the right side show various details about the PETSCII code point.
 
 	$( "#cbmshift, #rvsoff-lu" ).click(function() {
   	$( "#rvsoff-ug" ).toggleClass( "c64_cset_shift" );
+	if (viewing) {
+		var myRow = viewing.closest('tr').index();
+		var myCol = viewing.index();
+		highlightRelated(myRow*16+myCol);
+	}
   });
 
 	$('td').click(function() {
 		var myCol = $(this).index();
 		var $tr = $(this).closest('tr');
 		var myRow = $tr.index();
+		var petscii = myRow*16+myCol;
 
 		if (viewing != null) {
 			viewing.removeClass( "viewing" );
@@ -360,8 +366,54 @@ Information to the right side show various details about the PETSCII code point.
 		viewing = $(this);
 		$(this).addClass( "viewing" );
 
-		view(myRow*16+myCol, $(this));
+		highlightRelated(petscii);
+		view(petscii, $(this));
 	});
+
+	function getBasicKeys(petscii) {
+		var keyObj = keycode[petscii];
+		if (!keyObj || !keyObj.key) return [];
+		
+		var $div = $('<div>').html(keyObj.key);
+		var keys = $div.find('.key').map(function() {
+			return $(this).text().trim().toUpperCase();
+		}).get();
+		
+		var excluded = ['SHIFT', 'CBM', 'CTRL', 'CONTROL'];
+		var basicKeys = [];
+		for (var i = 0; i < keys.length; i++) {
+			if (excluded.indexOf(keys[i]) === -1) {
+				basicKeys.push(keys[i]);
+			}
+		}
+		
+		return basicKeys;
+	}
+
+	function highlightRelated(petscii) {
+		$('.related-key').removeClass('related-key');
+		
+		var basicKeys = getBasicKeys(petscii);
+		if (basicKeys.length === 0) return;
+		
+		var $tds = $('#rvsoff-ug td');
+		for (var i = 0; i < 256; i++) {
+			if (i === petscii) continue;
+			var otherBasicKeys = getBasicKeys(i);
+			
+			var isRelated = false;
+			for (var j = 0; j < basicKeys.length; j++) {
+				if (otherBasicKeys.indexOf(basicKeys[j]) !== -1) {
+					isRelated = true;
+					break;
+				}
+			}
+			
+			if (isRelated) {
+				$tds.eq(i).addClass('related-key');
+			}
+		}
+	}
 
 	function view(petscii, td) {
 		var nilch = 0xfffd;
@@ -570,6 +622,7 @@ Information to the right side show various details about the PETSCII code point.
 	}
 
 	view(0x5f);
+	highlightRelated(0x5f);
 
 	$(window).bind("load", function() {
 		$('#container').addClass('loaded');

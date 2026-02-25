@@ -130,6 +130,10 @@ td.viewing, td.viewing span {
 	background-color: #444444 !important;
 	color: #9ad284 !important;
 }
+td.related-key, td.related-key span {
+	background-color: #303030 !important;
+	color: #6c5eb5 !important;
+}
 
 #cbmshift {
 	xfloat: right;
