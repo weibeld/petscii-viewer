@@ -47,7 +47,7 @@
 			<div class="row">
 				<div class="col-xs-12 c64_petscii">
 
-					<table cellpadding="0" cellspacing="0" border="0" id="rvsoff-ug" class="matrix  c64_32x32 c64_fg0e c64_bg06">
+					<table cellpadding="0" cellspacing="0" border="0" id="rvsoff-ug" class="matrix  c64_32x32 c64_fg0b c64_bg01">
 					<tr>
 					<td> <span class="nothingcode">&#x00100;</span> </td><td> <span class="nothingcode">&#x00101;</span> </td><td> <span class="nothingcode">&#x00102;</span> </td><td> <span class="controlcode">&#x00103;</span> </td><td> <span class="nothingcode">&#x00104;</span> </td><td> <span class="colorcode c64_bg01_con">&#x00105;</span> </td><td> <span class="nothingcode">&#x00106;</span> </td><td> <span class="nothingcode">&#x00107;</span> </td><td> <span class="controlcode">&#x00108;</span> </td><td> <span class="controlcode">&#x00109;</span> </td><td> <span class="nothingcode">&#x0010a;</span> </td><td> <span class="nothingcode">&#x0010b;</span> </td><td> <span class="nothingcode">&#x0010c;</span> </td><td> <span class="controlcode">&#x0010d;</span> </td><td> <span class="controlcode">&#x0010e;</span> </td><td> <span class="nothingcode">&#x0010f;</span> </td></tr>
 					<tr>
@@ -697,6 +697,14 @@ Information to the right side show various details about the PETSCII code point.
 		var h = ("000000000000000" + value.toString(16)).substr(-16);
 		return h.substr(16-l,l);
 	}
+
+	// Initialize "no-key" characters
+	$('#rvsoff-ug td').each(function(index) {
+		var info = getKeyInfo(index);
+		if (info.length === 0) {
+			$(this).addClass('no-key');
+		}
+	});
 
 	view(0x5f);
 	viewing = $('#rvsoff-ug td').eq(0x5f);
