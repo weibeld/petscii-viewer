@@ -87,6 +87,15 @@
 				<span id="cbmshift" class="key">CBM/Shift</span> <span class="c64_cset_shift" style="visibility: hidden;">&nbsp;</span>
 			</div>
 
+			<div class="col-xs-12 legend-container">
+				<span class="legend-label">Key Combinations:</span>
+				<div class="legend-item" data-type="mod-base"><span class="key-label mod-base">*</span><span class="count"></span></div>
+				<div class="legend-item" data-type="mod-shift"><span class="key-label mod-shift">Shift-*</span><span class="count"></span></div>
+				<div class="legend-item" data-type="mod-cbm"><span class="key-label mod-cbm">CBM-*</span><span class="count"></span></div>
+				<div class="legend-item" data-type="mod-ctrl"><span class="key-label mod-ctrl">Control-*</span><span class="count"></span></div>
+				<div class="legend-item" data-type="mod-none"><span class="key-label mod-none">None</span><span class="count"></span></div>
+			</div>
+
 <div class="col-xs-12" style="margin-top: 16px;">
 <p>This PETSCII reference is specific to the C64 character set & control codes. Character matrix shows the resulting glyph or control code effect
 of each PETSCII code point defaulting to reverse mode off. Click characters in the matrix to switch the detail view. Case mode
@@ -347,18 +356,42 @@ Information to the right side show various details about the PETSCII code point.
 
 	$( "#cbmshift, #rvsoff-lu" ).click(function() {
   	$( "#rvsoff-ug" ).toggleClass( "c64_cset_shift" );
-	if (viewing) {
+	if ($('.legend-item.active').length > 0) {
+		highlightRelated(null, $('.legend-item.active').data('type'));
+	} else if (viewing) {
 		var myRow = viewing.closest('tr').index();
 		var myCol = viewing.index();
 		highlightRelated(myRow*16+myCol);
 	}
   });
 
+	$('.legend-item').click(function() {
+		var wasActive = $(this).hasClass('active');
+		$('.legend-item').removeClass('active');
+		
+		if (wasActive) {
+			if (viewing) {
+				var myRow = viewing.closest('tr').index();
+				var myCol = viewing.index();
+				highlightRelated(myRow*16+myCol);
+			} else {
+				$('.key-labels').remove();
+				$('.related-key').removeClass('related-key');
+			}
+		} else {
+			$(this).addClass('active');
+			var type = $(this).data('type');
+			highlightRelated(null, type);
+		}
+	});
+
 	$('td').click(function() {
 		var myCol = $(this).index();
 		var $tr = $(this).closest('tr');
 		var myRow = $tr.index();
 		var petscii = myRow*16+myCol;
+
+		$('.legend-item').removeClass('active');
 
 		if (viewing != null) {
 			viewing.removeClass( "viewing" );
@@ -404,7 +437,7 @@ Information to the right side show various details about the PETSCII code point.
 				if (modifiersList.indexOf(k) !== -1) {
 					mods.push(k);
 				} else {
-					bKeys.push(keys[i]); // Keep case from map if applicable
+					bKeys.push(keys[i]);
 				}
 			}
 			if (keys.length > 0) {
@@ -413,6 +446,16 @@ Information to the right side show various details about the PETSCII code point.
 		}
 		
 		return result;
+	}
+
+	function getModClass(modifiers) {
+		if (!modifiers || modifiers.length === 0) return 'mod-none';
+		if (modifiers.length > 1) return 'mod-multi';
+		var mName = modifiers[0];
+		if (mName === 'SHIFT') return 'mod-shift';
+		if (mName === 'CBM') return 'mod-cbm';
+		if (mName === 'CTRL' || mName === 'CONTROL') return 'mod-ctrl';
+		return 'mod-multi';
 	}
 
 	function highlightRelated(petscii) {
@@ -698,11 +741,39 @@ Information to the right side show various details about the PETSCII code point.
 		return h.substr(16-l,l);
 	}
 
-	// Initialize "no-key" characters
+	// Initialize "no-key" characters and calculate counts
+	var counts = {
+		'mod-base': 0,
+		'mod-shift': 0,
+		'mod-cbm': 0,
+		'mod-ctrl': 0,
+		'mod-none': 0
+	};
+
 	$('#rvsoff-ug td').each(function(index) {
 		var info = getKeyInfo(index);
 		if (info.length === 0) {
 			$(this).addClass('no-key');
+			counts['mod-none']++;
+		} else {
+			var categories = [];
+			for (var c = 0; c < info.length; c++) {
+				var cat = getModClass(info[c].modifiers);
+				if (cat !== 'mod-multi' && categories.indexOf(cat) === -1) {
+					categories.push(cat);
+					if (counts[cat] !== undefined) {
+						counts[cat]++;
+					}
+				}
+			}
+		}
+	});
+
+	// Update legend counts
+	$('.legend-item').each(function() {
+		var type = $(this).data('type');
+		if (counts[type] !== undefined) {
+			$(this).find('.count').text('(' + counts[type] + ')');
 		}
 	});
 

@@ -194,6 +194,84 @@ td.related-key {
 	color: #000000 !important;
 }
 
+.key-label.mod-none {
+	background-color: #959595 !important; /* Grey */
+	color: #ffffff !important;
+}
+
+/* Legend Styles */
+.legend-container {
+	margin-top: 12px;
+	padding-top: 8px;
+	border-top: 1px solid #ddd;
+	user-select: none;
+}
+.legend-label {
+	display: block;
+	margin-bottom: 4px;
+	font-size: 10px;
+	font-weight: bold;
+	color: #333;
+	text-transform: uppercase;
+}
+.legend-item {
+	cursor: pointer;
+	margin-right: 8px;
+	display: inline-block;
+	padding: 3px 6px;
+	border: 2px solid transparent;
+	border-radius: 4px;
+	transition: all 0.2s;
+}
+.legend-item:hover {
+	background: #f8f8f8;
+	border-color: #ccc;
+}
+.legend-item.active {
+	border-color: #000;
+	background: #eee;
+}
+.legend-item .key-label {
+	font-size: 9px;
+	line-height: 13px;
+}
+.legend-item .count {
+	font-size: 9px;
+	color: #666;
+	margin-left: 4px;
+	display: none;
+}
+.legend-item.active .count {
+	display: inline;
+	color: #000;
+	font-weight: bold;
+}
+
+.key-label.mod-shift {
+	background-color: #0000ff !important; /* Pure Blue */
+	color: #ffffff !important;
+}
+
+.key-label.mod-cbm {
+	background-color: #ff0000 !important;  /* Pure Red */
+	color: #ffffff !important;
+}
+
+.key-label.mod-ctrl {
+	background-color: #ffff00 !important;  /* Pure Yellow */
+	color: #000000 !important;
+}
+
+.key-label.mod-base {
+	background-color: #00ff00 !important;  /* Pure Green */
+	color: #000000 !important;
+}
+
+.key-label.mod-multi {
+	background-color: #ffffff !important;  /* White */
+	color: #000000 !important;
+}
+
 #cbmshift {
 	xfloat: right;
 	display: inline-block;
