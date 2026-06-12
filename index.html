@@ -356,8 +356,12 @@ Information to the right side show various details about the PETSCII code point.
 
 	$( "#cbmshift, #rvsoff-lu" ).click(function() {
   	$( "#rvsoff-ug" ).toggleClass( "c64_cset_shift" );
-	if ($('.legend-item.active').length > 0) {
-		highlightRelated(null, $('.legend-item.active').data('type'));
+	var activeTypes = $('.legend-item.active').map(function() {
+		return $(this).data('type');
+	}).get();
+	
+	if (activeTypes.length > 0) {
+		highlightRelated(null, activeTypes);
 	} else if (viewing) {
 		var myRow = viewing.closest('tr').index();
 		var myCol = viewing.index();
@@ -366,10 +370,15 @@ Information to the right side show various details about the PETSCII code point.
   });
 
 	$('.legend-item').click(function() {
-		var wasActive = $(this).hasClass('active');
-		$('.legend-item').removeClass('active');
+		$(this).toggleClass('active');
 		
-		if (wasActive) {
+		var activeTypes = $('.legend-item.active').map(function() {
+			return $(this).data('type');
+		}).get();
+		
+		if (activeTypes.length > 0) {
+			highlightRelated(null, activeTypes);
+		} else {
 			if (viewing) {
 				var myRow = viewing.closest('tr').index();
 				var myCol = viewing.index();
@@ -378,10 +387,6 @@ Information to the right side show various details about the PETSCII code point.
 				$('.key-labels').remove();
 				$('.related-key').removeClass('related-key');
 			}
-		} else {
-			$(this).addClass('active');
-			var type = $(this).data('type');
-			highlightRelated(null, type);
 		}
 	});
 
@@ -449,7 +454,7 @@ Information to the right side show various details about the PETSCII code point.
 	}
 
 	function getModClass(modifiers) {
-		if (!modifiers || modifiers.length === 0) return 'mod-none';
+		if (!modifiers || modifiers.length === 0) return 'mod-base';
 		if (modifiers.length > 1) return 'mod-multi';
 		var mName = modifiers[0];
 		if (mName === 'SHIFT') return 'mod-shift';
@@ -458,58 +463,74 @@ Information to the right side show various details about the PETSCII code point.
 		return 'mod-multi';
 	}
 
-	function highlightRelated(petscii) {
+	function highlightRelated(petscii, legendTypes) {
 		$('.key-labels').remove();
 		$('.related-key').removeClass('related-key');
 		
-		var currentCombos = getKeyInfo(petscii);
 		var currentBasicKeys = [];
-		for (var c = 0; c < currentCombos.length; c++) {
-			for (var k = 0; k < currentCombos[c].basicKeys.length; k++) {
-				var bKey = currentCombos[c].basicKeys[k].toUpperCase();
-				if (currentBasicKeys.indexOf(bKey) === -1) {
-					currentBasicKeys.push(bKey);
+		if (petscii !== null) {
+			var currentCombos = getKeyInfo(petscii);
+			for (var c = 0; c < currentCombos.length; c++) {
+				for (var k = 0; k < currentCombos[c].basicKeys.length; k++) {
+					var bKey = currentCombos[c].basicKeys[k].toUpperCase();
+					if (currentBasicKeys.indexOf(bKey) === -1) {
+						currentBasicKeys.push(bKey);
+					}
 				}
 			}
+			if (currentBasicKeys.length === 0) {
+				$('#rvsoff-ug td').eq(petscii).addClass('related-key');
+				return;
+			}
 		}
-		
-		if (currentBasicKeys.length === 0) return;
 		
 		var $tds = $('#rvsoff-ug td');
 		for (var i = 0; i < 256; i++) {
 			var otherCombos = getKeyInfo(i);
 			var matchingCombos = [];
+			var isNoneMatch = false;
 			
-			for (var oc = 0; oc < otherCombos.length; oc++) {
-				var isMatch = false;
-				for (var j = 0; j < otherCombos[oc].basicKeys.length; j++) {
-					if (currentBasicKeys.indexOf(otherCombos[oc].basicKeys[j].toUpperCase()) !== -1) {
-						isMatch = true;
-						break;
+			if (legendTypes && Array.isArray(legendTypes)) {
+				if (otherCombos.length === 0) {
+					if (legendTypes.indexOf('mod-none') !== -1) {
+						isNoneMatch = true;
+					}
+				} else {
+					for (var oc = 0; oc < otherCombos.length; oc++) {
+						if (legendTypes.indexOf(getModClass(otherCombos[oc].modifiers)) !== -1) {
+							matchingCombos.push(otherCombos[oc]);
+						}
 					}
 				}
-				if (isMatch) {
-					matchingCombos.push(otherCombos[oc]);
+			} else {
+				// Single selection mode
+				for (var oc = 0; oc < otherCombos.length; oc++) {
+					var isMatch = false;
+					for (var j = 0; j < otherCombos[oc].basicKeys.length; j++) {
+						if (currentBasicKeys.indexOf(otherCombos[oc].basicKeys[j].toUpperCase()) !== -1) {
+							isMatch = true;
+							break;
+						}
+					}
+					if (isMatch) {
+						matchingCombos.push(otherCombos[oc]);
+					}
 				}
 			}
 			
-			if (matchingCombos.length > 0) {
+			if (isNoneMatch || matchingCombos.length > 0) {
 				var $td = $tds.eq(i);
+				$td.addClass('related-key');
 				var $labelContainer = $('<div class="key-labels">').appendTo($td);
 				
+				if (isNoneMatch) {
+					$('<div class="key-label mod-none">').text('None').appendTo($labelContainer);
+				}
+
 				for (var m = 0; m < matchingCombos.length; m++) {
 					var combo = matchingCombos[m];
 					var modLabels = [];
-					var modClass = 'mod-base';
-					
-					if (combo.modifiers.length > 1) {
-						modClass = 'mod-multi';
-					} else if (combo.modifiers.length === 1) {
-						var mName = combo.modifiers[0];
-						if (mName === 'SHIFT') modClass = 'mod-shift';
-						else if (mName === 'CBM') modClass = 'mod-cbm';
-						else if (mName === 'CTRL' || mName === 'CONTROL') modClass = 'mod-ctrl';
-					}
+					var modClass = getModClass(combo.modifiers);
 					
 					for (var mi = 0; mi < combo.modifiers.length; mi++) {
 						var mName = combo.modifiers[mi];
@@ -527,6 +548,10 @@ Information to the right side show various details about the PETSCII code point.
 						labelText = bKey;
 					}
 					
+					if (!legendTypes && i === petscii && modClass === 'mod-base') {
+						labelText = '';
+					}
+
 					if (labelText) {
 						$('<div class="key-label">').addClass(modClass).text(labelText).appendTo($labelContainer);
 					}
