@@ -14,8 +14,8 @@ The [`style64-org-petscii`](#style64-org-petscii) directory contains a modified 
    - For example, when selecting the character _A_, also highlight the characters with the key combinations _Shift-A_, _CBM-A_, and _Control-A_
    - Conversely, when selecting, for example, the character with the key combination _Shift-A_, also highlight the characters with key combinations _CBM-A_, _Control-A_, and just _A_
 2. Add an interactive legend for key combination types (_Shift-*_, _CBM-*_, _Control-*_ key combinations and just the bare key itself)
-  - For example, when clicking on the _Shift-*_ legend item, highlight all characters that have a key combination that includes the _Shift_ key
-  - Also display the count of characters in each key combination group when clicking on a legend item
+   - For example, when clicking on the _Shift-*_ legend item, highlight all characters that have a key combination that includes the _Shift_ key
+   - Also display the count of characters in each key combination group when clicking on a legend item
 
 The code of the original PETSCII Reference app has been obtained with `wget --mirror` and the changes have been implemented by vibe coding with Gemini CLI.
 
